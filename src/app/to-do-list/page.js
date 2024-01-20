@@ -1,9 +1,11 @@
 "use client"
 import {db} from '@/firestore'
-import { collection, query, where, getDocs } from "firebase/firestore"
+import { collection, query, getDocs } from "firebase/firestore"
 import { useEffect,useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import ToDo from '@/app/(components)/ToDo'
-import AddToDo from '../(components)/AddToDo'
+import AddToDo from '@/app/(components)/AddToDo'
+import { UpdateAllToDos } from '@/app/Store/ToDoSlice'
 
 const getAllToDos = async ()=>{
   const q = query(collection(db, "todos"))
@@ -21,17 +23,21 @@ const getAllToDos = async ()=>{
 }
 
 const List = () =>{
+  const AllToDos = useSelector(state => state.todos)
+  const dispatch = useDispatch()
   const [toDos,setToDos] = useState([])
+  console.log('ALL TO DOS',AllToDos)
+
   useEffect(()=>{
     getAllToDos().then((data)=>{
-      setToDos(data)
+      // setToDos(data)
+      dispatch(UpdateAllToDos(data))
     })
   },[])
   return (
     <div>
       to do list
-      {JSON.stringify(toDos)}
-      {toDos.map((toDo)=>(
+      {AllToDos.map((toDo)=>(
         <ToDo title={toDo.title} description={toDo.description} id={toDo.id}/>
       ))}
       <AddToDo/>

@@ -11,12 +11,12 @@ const todosSlice = createSlice({
         completed: false
       })
     },
-    todoToggled(state, action) {
-      const todo = state.find(todo => todo.id === action.payload)
-      todo.completed = !todo.completed
+    UpdateAllToDos(state, action) {
+      state = action.payload
+      return state
     }
   }
 })
 
-export const { todoAdded, todoToggled } = todosSlice.actions
+export const { todoAdded, UpdateAllToDos } = todosSlice.actions
 export default todosSlice.reducer
