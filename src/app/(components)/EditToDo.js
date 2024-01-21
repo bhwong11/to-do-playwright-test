@@ -1,24 +1,43 @@
 "use client"
 import { useRef } from "react"
-import { doc, updateDoc,setDoc, getDoc, deleteDoc } from "firebase/firestore"; 
-import { db } from "@/firestore";
+import { doc, updateDoc, getDoc, deleteDoc } from "firebase/firestore";
+import { db } from "@/firestore"
+import { updateToDo, deleteToDo } from "@/app/Store/ToDoSlice"
+import { useSelector, useDispatch } from 'react-redux'
 
-const editToDo = async (id,data ={})=>{
-  const toDoRef = doc(db, "todos", id)
-  await updateDoc(toDoRef, data)
-  const newDoc = await getDoc(toDoRef)
-  console.log('new doc',newDoc.data())
-  return newDoc
-}
-
-const deleteToDo = async (id)=>{
-  const toDoRef = doc(db, "todos", id)
-  await deleteDoc(toDoRef)
-}
-
-const EditToDo = ({id, title, description})=>{
+const EditToDo = ({id})=>{
+  const {title, description} = useSelector(state=>state.toDos.find(toDo=>toDo.id===id))
   const titleRef = useRef(title)
   const descriptionRef = useRef(description)
+  const dispatch = useDispatch()
+
+  const editToDo = async (id,data ={})=>{
+    try{
+      const toDoRef = doc(db, "todos", id)
+      await updateDoc(toDoRef, data)
+      const newDoc = await getDoc(toDoRef)
+      console.log('new doc',newDoc.data(), newDoc.id)
+      dispatch(updateToDo({
+        id:newDoc.id,
+        ...newDoc.data()
+      }))
+      return newDoc
+    }catch(err){
+      console.log('error on add to do',err)
+    }
+  }
+  
+  const deleteToDoFromList = async (id)=>{
+    try{
+      const toDoRef = doc(db, "todos", id)
+      await deleteDoc(toDoRef)
+      dispatch(deleteToDo({
+        id
+      }))
+    }catch(err){
+      console.log('error on add to do',err)
+    }
+  }
 
   return (
     <div className="border-2 border-grey-500 my-2 p-2">
@@ -47,7 +66,7 @@ const EditToDo = ({id, title, description})=>{
        finish Edit ToDo
       </button>
       <button className="btn btn-red" onClick={()=>{
-        deleteToDo(id)
+        deleteToDoFromList(id)
       }}>
        delete ToDo
       </button>
