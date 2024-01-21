@@ -26,6 +26,10 @@
   @apply bg-red-500 hover:bg-red-700 text-white
 }
 
+.link{
+  @apply font-medium text-blue-600 dark:text-blue-500 hover:underline
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;
