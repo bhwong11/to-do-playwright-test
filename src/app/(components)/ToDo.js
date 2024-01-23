@@ -8,8 +8,8 @@ const ToDo = ({id})=>{
   const [showEdit,setShowEdit]= useState(false)
 
   return (
-    <div className="border-2 border-grey-500 my-2 p-2">
-      <div>{title}</div>
+    <div className="to-do border-2 border-grey-500 my-2 p-2">
+      <p>{title}</p>
       <p>{description}</p>
       <button className="link" onClick={()=>setShowEdit(prev=>!prev)}>
         {showEdit?"hide edit":"show edit"}

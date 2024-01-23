@@ -33,30 +33,33 @@ const AddToDo = ()=>{
 
   return (
     <div className="border-2 border-grey-500 my-2 p-2">
-      <label>
-        title
-        <input
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          value={title}
-          onChange={(e)=>setTitle(e.target.value)}
-        />
-      </label>
-      <label>
-        description
-        <input 
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          value={description}
-          onChange={(e)=>setDescription(e.target.value)}
-        />
-      </label>
-      <button className="btn btn-blue" onClick={()=>{
-        addToDoToList({
-          title: title,
-          description: description
-        })
-      }}>
-       finish Add ToDo
-      </button>
+      <form onSubmit={(e)=>{
+          e.preventDefault()
+          addToDoToList({
+            title: title,
+            description: description
+          })
+        }}>
+        <label>
+          title
+          <input
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            value={title}
+            onChange={(e)=>setTitle(e.target.value)}
+          />
+        </label>
+        <label>
+          description
+          <input 
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            value={description}
+            onChange={(e)=>setDescription(e.target.value)}
+          />
+        </label>
+        <button className="btn btn-blue">
+        finish Add ToDo
+        </button>
+      </form>
     </div>
   )
 }

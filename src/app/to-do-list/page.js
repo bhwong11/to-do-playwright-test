@@ -29,9 +29,9 @@ const List = () =>{
   },[])
   return (
     <div>
-      to do list
+      <p>to do list!</p>
       {AllToDos.map((toDo)=>(
-        <ToDo title={toDo.title} description={toDo.description} id={toDo.id}/>
+        <ToDo title={toDo.title} description={toDo.description} id={toDo.id} key={`todo-${toDo.id}`}/>
       ))}
       <AddToDo/>
     </div>
