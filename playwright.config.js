@@ -47,6 +47,16 @@ module.exports = defineConfig({
       name: 'webkit',
       use: { ...devices['Desktop Safari'] },
     },
+    // {
+    //   name:"setup",
+    //   testDir:"./",
+    //   teardown:"teardown"
+    // },
+    // {
+    //   name:"teardown",
+    //   testDir:"./",
+    //   testMatch:"global-teardown.spec"
+    // }
 
     /* Test against mobile viewports. */
     // {

@@ -31,7 +31,7 @@ test.describe('Create delete functionality', () => {
     const context = await browser.newContext();
     const page = await context.newPage();
     await page.goto('http://localhost:3002/to-do-list');
-    const firstToDo = page.locator('.to-do').filter({hasText:'test'}).first()
+    const firstToDo = page.locator('.to-do').first()
     await firstToDo.waitFor({state: "visible"})
     const allToDos = await page.locator('.to-do',{hasText:'test'}).all()
     console.log('alltodos',allToDos)
@@ -77,7 +77,6 @@ test.describe('Create delete functionality', () => {
     await newToDoShowEditButton.click()
 
     await page.getByRole('button', { name: 'delete ToDo' }).click()
-
     await expect(newToDo).toBeHidden();
   })
 
