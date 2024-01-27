@@ -1,5 +1,6 @@
 // @ts-check
 import { test, expect } from '@playwright/test'
+import { webkit } from 'playwright'
 
 const testTasks = [{
     title:"test task title 1",
@@ -24,8 +25,11 @@ test.describe('Create delete functionality', () => {
     await page.goto('http://localhost:3002/to-do-list');
   });
 
-  test.afterEach( async({page})=>{
+  test.afterAll( async()=>{
     console.log('done')
+    const browser = await webkit.launch();
+    const context = await browser.newContext();
+    const page = await context.newPage();
     await page.goto('http://localhost:3002/to-do-list');
     const firstToDo = page.locator('.to-do').filter({hasText:'test'}).first()
     await firstToDo.waitFor({state: "visible"})
