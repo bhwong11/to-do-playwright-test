@@ -24,38 +24,17 @@ test.describe('Create delete functionality', () => {
     await page.goto('http://localhost:3002/to-do-list');
   });
 
-  test.afterEach( async({ page })=>{
+  test.afterEach( async({page})=>{
     console.log('done')
-    // const page = await browser.newPage()
     await page.goto('http://localhost:3002/to-do-list');
-    const newToDoTitle = page.getByRole('paragraph').filter({hasText:testTasks[0].title})
-    const newToDo = page.locator('.to-do', {has: newToDoTitle}).first()
-    const newToDoShowEditButton = newToDo.getByRole('button', { name: 'show edit' }).first()
-  
-    const isNewToDoShowEditButtonVisible = await newToDoShowEditButton.isVisible()
-    console.log('isNewToDoShowEditButtonVisible',isNewToDoShowEditButtonVisible)
-    // await newToDoShowEditButton.click()
-    // await page.getByRole('button', { name: 'delete ToDo' }).click()
-    if(isNewToDoShowEditButtonVisible){
-      await newToDoShowEditButton.click()
-      await page.getByRole('button', { name: 'delete ToDo' }).click()
+    const firstToDo = page.locator('.to-do').filter({hasText:'test'}).first()
+    await firstToDo.waitFor({state: "visible"})
+    const allToDos = await page.locator('.to-do',{hasText:'test'}).all()
+    console.log('alltodos',allToDos)
+    for(let i=0;i<allToDos.length;i++){
+      await allToDos[i].getByRole('button').click()
+      await allToDos[i].getByText('delete ToDo').click()
     }
-  
-    const editedToDoTitle = page.getByRole('paragraph').filter({hasText: 'test'})
-    const editedToDo = page.locator('.to-do', {has: editedToDoTitle}).first()
-    const editedToDoShowEditButton = editedToDo.getByRole('button', { name: 'show edit' }).first()
-    
-    const isEditedToDoShowEditButtonVisible = await editedToDoTitle.isVisible()
-    console.log('is visible', isEditedToDoShowEditButtonVisible)
-  
-    await editedToDoShowEditButton.click()
-    await page.getByRole('button', { name: 'delete ToDo' }).click()
-  
-    if(isEditedToDoShowEditButtonVisible){
-      await editedToDoShowEditButton.click()
-      await page.getByRole('button', { name: 'delete ToDo' }).click()
-    }
-  
   })
 
   test('page has correct title', async ({ page }) => {
@@ -104,11 +83,11 @@ test.describe('Create delete functionality', () => {
     const descriptionInput = page.getByRole('textbox', { name: 'description' })
     const createButton = page.getByRole('button', { name: 'finish Add ToDo' })
 
-    await titleInput.fill(testTasks[1].title)
-    await descriptionInput.fill(testTasks[1].description)
+    await titleInput.fill(testTasks[0].title)
+    await descriptionInput.fill(testTasks[0].description)
     await createButton.click()
 
-    const newToDoTitle = page.getByRole('paragraph').filter({hasText:testTasks[1].title})
+    const newToDoTitle = page.getByRole('paragraph').filter({hasText:testTasks[0].title})
     const newToDo = page.locator('.to-do', {has: newToDoTitle}).first()
     const newToDoShowEditButton = newToDo.getByRole('button', { name: 'show edit' }).first()
     await newToDoShowEditButton.click()
